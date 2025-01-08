@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -39,5 +41,25 @@ public class CategoryServiceImpl implements CategoryService {
         return category;
     }
 
+    @Override
+    @Transactional
+    public void deleteCategory(UUID id) {
+        Optional<CategoryEntity> category = categoryRepository.findById(id);
+
+        if (category.isPresent()) {
+            log.info("Category found: " + category.get());
+
+            if (!category.get().getPosts().isEmpty()) {
+                throw new IllegalStateException("Category has posts associated with it");
+            }
+
+            log.info("Deleting category with UUID: " + id);
+            categoryRepository.deleteById(id);
+            log.info("Category deleted.");
+
+        } else {
+            log.warn("Category not found with UUID: " + id);
+        }
+    }
 
 }

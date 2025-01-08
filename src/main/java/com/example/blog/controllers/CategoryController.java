@@ -10,9 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/categories")
@@ -35,6 +34,20 @@ public class CategoryController {
                     .message(ex.getMessage())
                     .build();
             return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    ResponseEntity<String> deleteCategory(@PathVariable UUID id) {
+        try {
+            categoryService.deleteCategory(id);
+            return ResponseEntity.ok("Category deleted with success!");
+        } catch (IllegalStateException ex) {
+            ApiErrorResponse error = ApiErrorResponse.builder()
+                    .status(HttpStatus.BAD_REQUEST.value())
+                    .message(ex.getMessage())
+                    .build();
+            return ResponseEntity.badRequest().body(error.getMessage());
         }
     }
 }
