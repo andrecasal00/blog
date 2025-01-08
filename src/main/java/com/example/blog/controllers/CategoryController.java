@@ -3,6 +3,7 @@ package com.example.blog.controllers;
 import com.example.blog.domain.dtos.CategoryDto;
 import com.example.blog.domain.entities.CategoryEntity;
 import com.example.blog.exceptions.AlreadyInUseException;
+import com.example.blog.exceptions.ApiErrorResponse;
 import com.example.blog.services.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -29,9 +30,11 @@ public class CategoryController {
         try {
             return ResponseEntity.ok(categoryService.createCategory(category));
         } catch (AlreadyInUseException ex) {
-            Map<String, String> errorResponse = new HashMap<>();
-            errorResponse.put("error", ex.getMessage());
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(errorResponse);
+            ApiErrorResponse error = ApiErrorResponse.builder()
+                    .status(HttpStatus.BAD_REQUEST.value())
+                    .message(ex.getMessage())
+                    .build();
+            return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
         }
     }
 }
