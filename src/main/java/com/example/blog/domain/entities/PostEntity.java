@@ -4,7 +4,9 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -33,6 +35,22 @@ public class PostEntity {
 
     @Column(nullable = false)
     private LocalDateTime updatedAt;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "author_id", nullable = false)
+    private UserEntity author;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id", nullable = false)
+    private CategoryEntity category;
+
+    @ManyToMany
+    @JoinTable(
+            name = "post_tags",
+            joinColumns = @JoinColumn(name = "post_id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id")
+    )
+    private Set<TagEntity> tags = new HashSet<>();
 
     @Override
     public boolean equals(Object o) {

@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -23,6 +25,9 @@ public class UserEntity {
 
     @Column(nullable = false)
     private LocalDateTime createdAt;
+
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PostEntity> posts = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {
