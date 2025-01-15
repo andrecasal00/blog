@@ -1,7 +1,7 @@
 package com.example.blog.domain.entities;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -11,7 +11,11 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "tbl_posts")
-@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@Builder
 public class PostEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -36,11 +40,11 @@ public class PostEntity {
     @Column(nullable = false)
     private LocalDateTime updatedAt;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "author_id", nullable = false)
     private UserEntity author;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id", nullable = false)
     private CategoryEntity category;
 

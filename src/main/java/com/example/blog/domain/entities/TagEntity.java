@@ -1,7 +1,7 @@
 package com.example.blog.domain.entities;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 import java.util.HashSet;
 import java.util.Objects;
@@ -10,7 +10,11 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "tbl_tags")
-@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@Builder
 public class TagEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

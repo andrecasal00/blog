@@ -1,7 +1,7 @@
 package com.example.blog.domain.entities;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -11,7 +11,11 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "tbl_users")
-@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@Builder
 public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
